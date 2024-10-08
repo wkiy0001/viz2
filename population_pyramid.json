@@ -1,0 +1,94 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "params": [
+      {
+        "name": "selectedState",
+        "value": "New South Wales",
+        "bind": {
+          "input": "select",
+          "options": [
+            "New South Wales",
+            "Victoria",
+            "Queensland",
+            "South Australia",
+            "Western Australia",
+            "Tasmania",
+            "Northern Territory",
+            "Australian Capital Territory"
+          ],
+          "name": "Select State: "
+        }
+      }
+    ],
+        "title": "Population Pyramid by State",
+        "width": 500,
+        "description": "Population pyramid for Australian states",
+        "data": {
+          "url": "https://raw.githubusercontent.com/wkiy0001/3179hw/refs/heads/main/merged_population_percentage.csv"
+        },
+        "transform": [
+          {"filter": "datum.State == selectedState"},
+          {"fold": ["Male_Pct", "Female_Pct"], "as": ["Gender", "Population"]},
+          {
+            "calculate": "datum.Gender == 'Male_Pct' ? -datum.Population : datum.Population",
+            "as": "signed_population"
+          }
+        ],
+        "height": 300,
+        "mark": "bar",
+        "encoding": {
+          "y": {
+            "field": "Age",
+            "type": "ordinal",
+            "sort": [
+              "100 and over",
+              "95-99",
+              "90-94",
+              "85-89",
+              "80-84",
+              "75-79",
+              "70-74",
+              "65-69",
+              "60-64",
+              "55-59",
+              "50-54",
+              "45-49",
+              "40-44",
+              "35-39",
+              "30-34",
+              "25-29",
+              "20-24",
+              "15-19",
+              "10-14",
+              "5-9",
+              "0-4"
+            ]
+          },
+          "x": {
+            "field": "signed_population",
+            "type": "quantitative",
+            "axis": {"title": "Population Percentage"},
+            "scale": {"domain": [-5, 5]}
+          },
+          "color": {
+            "field": "Gender",
+            "type": "nominal",
+            "scale": {
+              "domain": ["Male_Pct", "Female_Pct"],
+              "range": ["#3366cc", "#ff9999"]
+            },
+            "legend": {"title": "Gender"}
+          },
+          "tooltip": [
+            {"field": "Age", "type": "ordinal", "title": "Age Group"},
+            {"field": "Gender", "type": "nominal", "title": "Gender"},
+            {
+              "field": "Population",
+              "type": "quantitative",
+              "title": "Population (%)",
+              "format": ".2f"
+            }
+          ]
+        }
+      
+  }
