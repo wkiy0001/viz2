@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vega-Lite Visualizations</title>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+</head>
+<body>
+    <div id="vis1"></div>
+    <div id="vis2"></div>
+    <div id="vis3"></div>
+    <div id="vis4"></div>
+    <div id="vis5"></div>
+
+    <script>
+        async function embedVegaLite(specUrl, elementId) {
+            const response = await fetch(specUrl);
+            const spec = await response.json();
+            vegaEmbed('#' + elementId, spec, {actions: false});
+        }
+
+        embedVegaLite('interactive_map.json', 'vis1');
+        embedVegaLite('lga_map.json', 'vis2');
+    </script>
+</body>
+</html>
